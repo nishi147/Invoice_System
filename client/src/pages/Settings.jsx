@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Info 
 } from 'lucide-react';
-import api from '../services/api.js';
+import api, { API_URL } from '../services/api.js';
 
 const Settings = () => {
   const { user } = useSelector((state) => state.auth);
@@ -127,7 +127,7 @@ const Settings = () => {
   const handleDownloadBackup = () => {
     // Download database JSON backup
     const anchor = document.createElement('a');
-    anchor.href = '/api/settings/backup';
+    anchor.href = `${API_URL}/api/settings/backup`;
     anchor.download = `manshu_finance_backup_${Date.now()}.json`;
     document.body.appendChild(anchor);
     anchor.click();

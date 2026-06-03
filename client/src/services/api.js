@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000' : 'https://invoice-system-rust.vercel.app');
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: `${API_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -36,7 +38,7 @@ api.interceptors.response.use(
         }
 
         // Call refresh endpoint directly using a clean axios instance to avoid infinite loops
-        const res = await axios.post('/api/auth/refresh', { refreshToken });
+        const res = await axios.post(`${API_URL}/api/auth/refresh`, { refreshToken });
 
         if (res.data.success) {
           const { accessToken } = res.data.data;

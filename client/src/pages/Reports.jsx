@@ -9,6 +9,7 @@ import {
   TrendingUp, 
   ShieldAlert 
 } from 'lucide-react';
+import { API_URL } from '../services/api.js';
 
 const Reports = () => {
   const [downloading, setDownloading] = useState(null);
@@ -60,7 +61,7 @@ const Reports = () => {
     const loaderId = `${type}-${format}`;
     setDownloading(loaderId);
     try {
-      const url = `/api/reports/export?type=${type}&format=${format}`;
+      const url = `${API_URL}/api/reports/export?type=${type}&format=${format}`;
       
       const anchor = document.createElement('a');
       anchor.href = url;

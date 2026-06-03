@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { ClassicTemplate, ModernTemplate, CorporateTemplate, MinimalTemplate } from '../components/InvoiceTemplates.jsx';
+import { API_URL } from '../services/api.js';
 
 const ClientPortal = () => {
   const { token } = useParams();
@@ -33,19 +34,19 @@ const ClientPortal = () => {
 
   const fetchPublicInvoice = async () => {
     try {
-      const res = await axios.get(`/api/invoices/public/${token}`);
+      const res = await axios.get(`${API_URL}/api/invoices/public/${token}`);
       if (res.data.success) {
         const inv = res.data.data;
         setInvoice(inv);
 
         // Fetch company settings for branding
-        const settingsRes = await axios.get('/api/settings'); // We made GET public or it falls back, wait, is GET /api/settings protected? Let's check. Yes, but we can write a public settings fetching endpoint or fetch settings inside public invoice payload! In our invoiceController's public endpoint, we didn't embed companySettings, but wait! We can fetch settings or mock them or make it fetch via axios. Let's make sure it handles it elegantly, or let's load defaults if settings fails, since the server GET settings is protected. To make it extremely clean and fail-safe, we can fetch public company info directly or handle fallback if settings returns unauthorized.
+        const settingsRes = await axios.get(`${API_URL}/api/settings`); // We made GET public or it falls back, wait, is GET /api/settings protected? Let's check. Yes, but we can write a public settings fetching endpoint or fetch settings inside public invoice payload! In our invoiceController's public endpoint, we didn't embed companySettings, but wait! We can fetch settings or mock them or make it fetch via axios. Let's make sure it handles it elegantly, or let's load defaults if settings fails, since the server GET settings is protected. To make it extremely clean and fail-safe, we can fetch public company info directly or handle fallback if settings returns unauthorized.
         if (settingsRes.data.success) {
           setSettings(settingsRes.data.data);
         }
 
         // Fetch payments
-        const paymentsRes = await axios.get(`/api/payments/invoice/${inv._id}`);
+        const paymentsRes = await axios.get(`${API_URL}/api/payments/invoice/${inv._id}`);
         if (paymentsRes.data.success) {
           setPayments(paymentsRes.data.data);
         }
@@ -70,7 +71,7 @@ const ClientPortal = () => {
   }, [token]);
 
   const handleDownloadPDF = () => {
-    const downloadUrl = `/api/invoices/${invoice._id}/pdf`;
+    const downloadUrl = `${API_URL}/api/invoices/${invoice._id}/pdf`;
     const anchor = document.createElement('a');
     anchor.href = downloadUrl;
     anchor.download = `${invoice.invoiceNumber}.pdf`;

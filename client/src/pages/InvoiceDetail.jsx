@@ -18,7 +18,7 @@ import {
   Info,
   Clock
 } from 'lucide-react';
-import api from '../services/api.js';
+import api, { API_URL } from '../services/api.js';
 import { ClassicTemplate, ModernTemplate, CorporateTemplate, MinimalTemplate } from '../components/InvoiceTemplates.jsx';
 
 const InvoiceDetail = () => {
@@ -75,7 +75,7 @@ const InvoiceDetail = () => {
   const handleDownloadPDF = () => {
     // Direct link to the API endpoint which returns the PDF attachment
     const token = localStorage.getItem('accessToken');
-    const downloadUrl = `/api/invoices/${id}/pdf`;
+    const downloadUrl = `${API_URL}/api/invoices/${id}/pdf`;
     
     // We can open the download link directly
     const anchor = document.createElement('a');

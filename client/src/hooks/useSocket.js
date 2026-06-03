@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
+import { API_URL } from '../services/api.js';
 
 export const useSocket = (onNotificationReceived) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -16,8 +17,8 @@ export const useSocket = (onNotificationReceived) => {
       return;
     }
 
-    // Connect to server (Vite proxies to 5000)
-    const socket = io('/', {
+    // Connect to server
+    const socket = io(API_URL, {
       transports: ['websocket'],
       autoConnect: true,
     });
